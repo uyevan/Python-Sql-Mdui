@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+</head>
+<script type="text/javascript" src="static/js/main.js"></script>
+<script type="text/javascript" src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+
+<script type="text/javascript">
+        $.get('Add', function (data) {
+            $("#header").html(data)
+        });
+
+
+
+
+
+</script>
+
+<div class="mdui-tabr mdui-tab-scrollable mdui-tab mdui-tab-centered" style="height: 60px;" mdui-tab>
+    <a id="Add" class="mdui-tab-active mdui-ripple">增加</a>
+    <a id="Delete" class="mdui-ripple">删除</a>
+    <a id="Modify" class="mdui-ripple">修改</a>
+    <a id="Check" class="mdui-ripple">查看</a>
+    <a id="List" class="mdui-ripple">列表</a>
+    <a id="Upload" class="mdui-ripple">单文件上传</a>
+    <a id="Uploads" class="mdui-ripple">多文件上传</a>
+</div>
+
+<div class="mdui-container-fluid" id="header"></div>
+
+</body>
+<script>
+
+    $('#Add').click(function () {
+        $.get('Add', function (data) {
+            $('#header').html(data)
+        });
+    });
+
+    $('#Delete').click(function () {
+        $.get('Delete', function (data) {
+            $('#header').html(data)
+        });
+    });
+
+    $('#Modify').click(function () {
+        $.get('Modify', function (data) {
+            $('#header').html(data)
+        });
+    });
+    $('#Check').click(function () {
+        $.get('Check', function (data) {
+            $('#header').html(data)
+        });
+    });
+    $('#List').click(function () {
+        $.get('List', function (data) {
+            $('#header').html(data)
+        });
+    });
+    $('#Upload').click(function () {
+        $.get('Upload', function (data) {
+            $('#header').html(data)
+        });
+    });
+    $('#Uploads').click(function () {
+        $.get('Uploads', function (data) {
+            $('#header').html(data)
+        });
+    });
+
+
+
+
+
+
+</script>
+
+</html>

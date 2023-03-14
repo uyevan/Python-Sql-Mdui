@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Check</title>
+    <link rel="icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+</head>
+<script type="text/javascript" src="static/js/main.js"></script>
+<script type="text/javascript" src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+<div class="mdui-container-fluid">
+    <div class="mdui-card mdui-center card">
+        <div class="mdui-card-media">
+            <button class="mdui-btn mdui-color-green-600 mdui-ripple mdui-center but">{{content.data}}</button>
+            <div class="mdui-row">
+                <!-- 浮动标签、多行文本框 -->
+                <div class="mdui-textfield mdui-textfield-floating-label input account_box">
+                    <i id="idnull" class="mdui-icon material-icons">settings_input_component</i>
+                    <label class="mdui-textfield-label">id</label>
+                    <textarea class="mdui-textfield-input" id="id"></textarea>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="mdui-typo" id="mdui-typo">
+
+            </div>
+        </div>
+        <br>
+        <br>
+        <button class="mdui-btn mdui-color-blue-600 mdui-ripple mdui-center add" id="check">
+            <i class="mdui-icon material-icons">search</i> 查看
+        </button>
+    </div>
+</div>
+</body>
+
+<script>
+    $("#check").click(function () {
+
+        if ($('#id').val() == "") {
+            var op = mdui.snackbar({
+                message: 'id不能为空'
+            });
+            // 空参数
+            return op;
+        }
+
+        var form = new FormData(); // 表单类
+        form.append("id", $('#id').val());
+        $.ajax({
+            type: "POST", //有form表单数据必须post
+            url: "/check",
+            data: form,
+            dataType: 'JSON',
+            cache: false,                      // 不缓存
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false,                // jQuery不要去设置Content-Type请求头
+            success: function (ret) {
+                console.log(ret)
+                if (ret.code == 200) {
+                    var str = " <p>user: <code>" + ret.data[1] + "</code>" +
+                        "<p>pass: <code>" + ret.data[2] + "</code>" +
+                        "<p>name: <code>" + ret.data[3] + "</code>" +
+                        "<p>ip: <code>" + ret.data[4] + "</code>" +
+                        "<p>head: <code>" + ret.data[5] + "</code>"
+                    document.getElementById("mdui-typo").innerHTML = str;
+                    mdui.snackbar({
+                        message: ret.msg
+                    });
+                } else {
+                    mdui.dialog({
+                        title: ret.code,
+                        content: ret.msg,
+                        buttons: [
+                            {
+                                text: '确认',
+                            }
+                        ]
+                    });
+                }
+            }
+        });
+    });
+
+</script>
+
+</html>

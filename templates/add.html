@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add</title>
+    <link rel="icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
+</head>
+<script type="text/javascript" src="static/js/main.js"></script>
+<script type="text/javascript" src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<body>
+<div class="mdui-container-fluid">
+    <div class="mdui-card mdui-center card">
+        <div class="mdui-card-media">
+            <button class="mdui-btn mdui-color-green-600 mdui-ripple mdui-center but">{{content.data}}</button>
+            <div class="mdui-row">
+                <!-- 浮动标签、多行文本框 -->
+                <div class="mdui-textfield mdui-textfield-floating-label input account_box">
+                    <i class="mdui-icon material-icons">account_box</i>
+                    <label class="mdui-textfield-label">user</label>
+                    <textarea class="mdui-textfield-input" id="user"></textarea>
+                </div>
+                <!-- 浮动标签、多行文本框 -->
+                <div class="mdui-textfield mdui-textfield-floating-label input account_box">
+                    <i class="mdui-icon material-icons">vpn_key</i>
+                    <label class="mdui-textfield-label">pass</label>
+                    <textarea class="mdui-textfield-input" id="pass"></textarea>
+                </div>
+                <!-- 浮动标签、多行文本框 -->
+                <div class="mdui-textfield mdui-textfield-floating-label input account_box">
+                    <i class="mdui-icon material-icons">insert_emoticon</i>
+                    <label class="mdui-textfield-label">name</label>
+                    <textarea class="mdui-textfield-input" id="name"></textarea>
+                </div>
+                <!-- 浮动标签、多行文本框 -->
+                <div class="mdui-textfield mdui-textfield-floating-label input account_box">
+                    <i class="mdui-icon material-icons">headset</i>
+                    <label class="mdui-textfield-label">head</label>
+                    <textarea class="mdui-textfield-input" id="head"></textarea>
+                </div>
+            </div>
+            <br>
+            <br>
+            <button class="mdui-btn mdui-color-blue-600 mdui-ripple mdui-center add" id="add">
+                <i class="mdui-icon material-icons">add_circle</i> 添加
+            </button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("#add").click(function () {
+
+        if ($('#user').val() == "" || $('#pass').val() == "" || $('#name').val() == "" || $('#head').val() == "") {
+            var op = mdui.snackbar({
+                message: '参数不能为空'
+            });
+            // 空参数
+            return op;
+        }
+
+        var form = new FormData(); // 表单类
+        form.append("user", $('#user').val());
+        form.append("pass", $('#pass').val());
+        form.append("name", $('#name').val());
+        form.append("head", $('#head').val());
+        // form.forEach((key, val) => {
+        //     //打印from，不能直接console.log();
+        //     console.log("key %s: value %s", key, val)
+        // })
+        $.ajax({
+            type: "POST", //有form表单数据必须post
+            url: "/add",
+            data: form,
+            dataType: 'JSON',
+            cache: false,                      // 不缓存
+            processData: false,                // jQuery不要去处理发送的数据
+            contentType: false, // jQuery不要去设置Content-Type请求头
+            success: function (ret) {
+                console.log(ret)
+                if (ret.code == 200) {
+                    mdui.snackbar({
+                        message: ret.msg
+                    });
+                } else {
+                    mdui.dialog({
+                        title: ret.code,
+                        content: ret.msg,
+                        buttons: [
+                            {
+                                text: '确认',
+                            }
+                        ]
+                    });
+                }
+            }
+        });
+    });
+
+
+
+
+
+</script>
+
+</html>
